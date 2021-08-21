@@ -2,9 +2,11 @@
   "name": "blog",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "start": "nodemon --inspect index.js",
+    "start": "nodemon --inspect src/index.js",
+    "build-css": "node-sass src/resources/scss/ --output src/public/css/",
+    "watch": "nodemon -e scss -x npm run build-css",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,10 +20,12 @@
   "author": "DiepKinh",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "express-handlebars": "^5.3.3"
   },
   "devDependencies": {
     "morgan": "^1.10.0",
+    "node-sass": "^6.0.1",
     "nodemon": "^2.0.12"
   }
 }
