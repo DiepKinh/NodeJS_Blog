@@ -9,8 +9,12 @@ const port = 3000;
 // cấu hình file tỉnh ( từ các file trong public)
 app.use(express.static(path.join(__dirname, "public")));
 
+//middleware
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 //HTTP Logger
-app.use(morgan("combined"));
+// app.use(morgan("combined"));
 
 // Template engine
 // exrname là định nghĩa lại cái đuôi, ban đầu nó là handlebars, nhưng dài nên định nghĩa lại
@@ -21,7 +25,20 @@ app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "resources/views"));
 
 app.get("/", (req, res) => {
+  res.render("home");
+});
+
+app.get("/new", (req, res) => {
   res.render("new");
+});
+
+app.get("/search", (req, res) => {
+  res.render("search");
+});
+
+app.post("/search", (req, res) => {
+  console.log(req.body);
+  res.send("hihi");
 });
 
 app.listen(port, () => {
