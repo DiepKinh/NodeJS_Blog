@@ -7,5 +7,3 @@ function route(app) {
 }
 
 module.exports = route;
-
-array = [3, 4, 5];

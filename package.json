@@ -11,7 +11,7 @@
   "lint-staged": {
     "src/**/*/{js,json,scss}": "prettier --single-quote --trailing-comma all --write "
   },
-  "husky":{
+  "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
     }
@@ -28,7 +28,8 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "express-handlebars": "^5.3.3"
+    "express-handlebars": "^5.3.3",
+    "mongoose": "^5.13.7"
   },
   "devDependencies": {
     "husky": "^7.0.1",
