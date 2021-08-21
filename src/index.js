@@ -6,6 +6,8 @@ const handlebars = require("express-handlebars");
 const app = express();
 const port = 3000;
 
+const route = require("./routes");
+
 // cấu hình file tỉnh ( từ các file trong public)
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -24,22 +26,8 @@ app.set("view engine", "hbs");
 // __dirname nó là sẽ đứng tại nơi cái index đang chạy là blog/src
 app.set("views", path.join(__dirname, "resources/views"));
 
-app.get("/", (req, res) => {
-  res.render("home");
-});
-
-app.get("/new", (req, res) => {
-  res.render("new");
-});
-
-app.get("/search", (req, res) => {
-  res.render("search");
-});
-
-app.post("/search", (req, res) => {
-  console.log(req.body);
-  res.send("hihi");
-});
+// Route init
+route(app);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
