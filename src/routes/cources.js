@@ -8,7 +8,9 @@ router.get("/create", courceController.create);
 router.post("/store", courceController.store);
 router.get("/:id/edit", courceController.edit);
 router.put("/:id", courceController.update);
-router.delete("/:id", courceController.destroy);
+router.delete("/:id", courceController.delete);
+router.patch("/:id/restore", courceController.restore);
+router.delete("/:id/force", courceController.destroy);
 router.get("/:slug", courceController.show);
 
 module.exports = router;

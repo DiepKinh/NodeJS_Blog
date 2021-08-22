@@ -1,6 +1,6 @@
 <div class="mt-4">
-  <h2> My Stored Cources</h2>
-  <a href="/me/trash/cources">Your Trash</a>
+  <a href="/me/stored/cources">Your Cource</a>
+  <h2> My Deleted Cources</h2>
   <table class="table">
     <thead>
       <tr>
@@ -20,22 +20,22 @@
           <td>{{this.level}}</td>
           <td>{{this.createdAt}}</td>
           <td><a
-              href="/cources/{{this._id}}/edit"
-              class="btn btn-info"
-            >Edit</a></td>
+              href=""
+              class="btn btn-info btn-restore"
+              data-id="{{this._id}}"
+            >Restore</a></td>
           <td><a
               href="/"
               class="btn btn-info"
               data-toggle="modal"
               data-target="#delete-cource-modal"
               data-id="{{this._id}}"
-            >Soft Delete</a></td>
+            >Delete</a></td>
         </tr>
         {{else}}
         <tr>
           <td colspan="5" class="text-center">
-            You have not posted any courses yet!
-            <a href="/cources/create">Click here to post </a>
+           Empty trash can!
           </td>
         </tr>
       {{/each}}
@@ -59,7 +59,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <p>Are you sure delete this cource?</p>
+        <p>Unable to restore! Are you sure delete this cource?</p>
       </div>
       <div class="modal-footer">
         <button
@@ -76,14 +76,16 @@
     </div>
   </div>
 
-{{! hidden form delete }}
 <form method="POST" name="delete-cource-form"></form>
+<form method="POST" name="restore-cource-form"></form>
+
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     var courceId;
     var deleteForm = document.forms["delete-cource-form"];
+    var restoreForm = document.forms["restore-cource-form"];
     var btnDelete = document.getElementById("btn-delete-cource");
-
+    var btnRestore = $(".btn-restore")
     $("#delete-cource-modal").on("show.bs.modal", function (event) {
       var button = $(event.relatedTarget);
       courceId = button.data("id");
@@ -91,9 +93,16 @@
 
     // xét khi nhấn nút aler delete
     btnDelete.onclick = function(){
-      deleteForm.action = "/cources/"+courceId+"?_method=DELETE";
+      deleteForm.action = "/cources/"+courceId+"/force?_method=DELETE";
       deleteForm.submit();
     }
+
+    btnRestore.click(function(e){
+      e.preventDefault();
+      var courceIdRestore = $(this).data("id")
+      restoreForm.action = "/cources/"+courceIdRestore+"/restore?_method=PATCH";
+      restoreForm.submit();
+    })
   });
 
 </script>

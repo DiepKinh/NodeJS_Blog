@@ -21,12 +21,13 @@ class CourceController {
 
   // [POST] /cources/store
   store(req, res, next) {
-    const formData = req.body;
+    // không muốn anh hưởng đến req.body nên ta tạo cái mới là form data, và áp dụng vùng nhớ ... ở JS Nâng Cao nè!
+    const formData = { ...req.body };
     formData.image = `https://img.youtube.com/vi/${req.body.videoId}/sddefault.jpg`;
     const cource = new Cource(req.body);
     cource
       .save()
-      .then(() => res.redirect("/"))
+      .then(() => res.redirect("/me/stored/cources"))
       .catch((error) => {});
   }
 
@@ -49,6 +50,24 @@ class CourceController {
   }
 
   // [DELETE] /cources/:id
+  delete(req, res, next) {
+    Cource.delete({ _id: req.params.id })
+      .then(() => {
+        res.redirect("back");
+      })
+      .catch((err) => next(err));
+  }
+
+  // [PATCH] /cources/:id/restore
+  restore(req, res, next) {
+    Cource.restore({ _id: req.params.id })
+      .then(() => {
+        res.redirect("back");
+      })
+      .catch((err) => next(err));
+  }
+
+  // [DELETE] /cources/:id/force
   destroy(req, res, next) {
     Cource.deleteOne({ _id: req.params.id })
       .then(() => {
