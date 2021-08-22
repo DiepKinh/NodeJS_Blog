@@ -28,11 +28,11 @@ app.engine("hbs", handlebars({ extname: ".hbs" }));
 app.set("view engine", "hbs");
 
 // __dirname nó là sẽ đứng tại nơi cái index đang chạy là blog/src
-app.set("views", path.join(__dirname, "resources/views"));
+app.set("views", path.join(__dirname, "resources", "views")); // thực ra nó như này :resources/views, nhưng vì để tích hợp trên nhiều hệ điều hành có thằng dùng / hay \ nên để như này để path.join tự chuyển
 
 // Route init
 route(app);
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`App listening at http://localhost:${port}`);
 });
