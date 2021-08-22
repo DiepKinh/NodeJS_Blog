@@ -47,6 +47,15 @@ class CourceController {
       })
       .catch((err) => next(err));
   }
+
+  // [DELETE] /cources/:id
+  destroy(req, res, next) {
+    Cource.deleteOne({ _id: req.params.id })
+      .then(() => {
+        res.redirect("back");
+      })
+      .catch((err) => next(err));
+  }
 }
 
 module.exports = new CourceController();
