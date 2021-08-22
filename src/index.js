@@ -2,6 +2,7 @@ const path = require("path");
 const express = require("express");
 const morgan = require("morgan");
 const handlebars = require("express-handlebars");
+var methodOverride = require("method-override");
 
 const route = require("./routes");
 const db = require("./config/db");
@@ -19,12 +20,23 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// giúp chuyển đổi post thanh fput trong form
+app.use(methodOverride("_method"));
+
 //HTTP Logger
 // app.use(morgan("combined"));
 
 // Template engine
 // exrname là định nghĩa lại cái đuôi, ban đầu nó là handlebars, nhưng dài nên định nghĩa lại
-app.engine("hbs", handlebars({ extname: ".hbs" }));
+app.engine(
+  "hbs",
+  handlebars({
+    extname: ".hbs",
+    helpers: {
+      sum: (a, b) => a + b,
+    },
+  })
+);
 app.set("view engine", "hbs");
 
 // __dirname nó là sẽ đứng tại nơi cái index đang chạy là blog/src

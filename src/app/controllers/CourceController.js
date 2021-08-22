@@ -29,6 +29,24 @@ class CourceController {
       .then(() => res.redirect("/"))
       .catch((error) => {});
   }
+
+  // [GET] /cources/:id/edit
+  edit(req, res, next) {
+    Cource.findById({ _id: req.params.id })
+      .then((cource) => {
+        res.render("cources/edit", { cource: mongooseToObject(cource) });
+      })
+      .catch((err) => next(err));
+  }
+
+  // [PUT] /cources/:id
+  update(req, res, next) {
+    Cource.updateOne({ _id: req.params.id }, req.body)
+      .then(() => {
+        res.redirect("/me/stored/cources");
+      })
+      .catch((err) => next(err));
+  }
 }
 
 module.exports = new CourceController();

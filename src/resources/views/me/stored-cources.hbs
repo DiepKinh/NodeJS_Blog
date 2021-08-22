@@ -1,0 +1,30 @@
+<div class="mt-4">
+  <h2> My Stored Cources</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name Cource</th>
+        <th scope="col"> Level </th>
+        <th scope="col" colspan="3">Time Create</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      {{#each cources}}
+        <tr>
+          {{! sum @index 1 xem ở index,js gôc phần engine helper }}
+          <th scope="row">{{sum @index 1}}</th>
+          <td>{{this.name}}</td>
+          <td>{{this.level}}</td>
+          <td>{{this.createdAt}}</td>
+          <td><a
+              href="/cources/{{this._id}}/edit"
+              class="btn btn-info"
+            >Edit</a></td>
+          <td><a href="" class="btn btn-info">Delete</a></td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
