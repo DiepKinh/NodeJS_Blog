@@ -8,6 +8,7 @@ router.get("/create", courceController.create);
 router.post("/store", courceController.store);
 router.get("/:id/edit", courceController.edit);
 router.put("/:id", courceController.update);
+router.delete("/:id", courceController.destroy);
 router.get("/:slug", courceController.show);
 
 module.exports = router;
