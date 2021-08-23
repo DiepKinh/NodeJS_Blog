@@ -1,6 +1,9 @@
 <div class="mt-4">
   <h2> My Stored Cources</h2>
-  <a href="/me/trash/cources">Your Trash</a>
+  {{!-- #if /if là khi cái deleted Cource có dữ liệu nó mới hiện ra --}}
+  {{#if deletedCource}}
+  <a href="/me/trash/cources">Your Trash ({{deletedCource}})</a>
+  {{/if}}
   <table class="table">
     <thead>
       <tr>
