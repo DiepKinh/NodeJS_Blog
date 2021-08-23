@@ -1,50 +1,77 @@
-<div class="mt-4">
+<form name="containerForm" class="mt-4" method="POST" action="/cources/handle-form-actions">
   <h2> My Stored Cources</h2>
   {{!-- #if /if là khi cái deleted Cource có dữ liệu nó mới hiện ra --}}
   {{#if deletedCource}}
   <a href="/me/trash/cources">Your Trash ({{deletedCource}})</a>
   {{/if}}
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Name Cource</th>
-        <th scope="col"> Level </th>
-        <th scope="col" colspan="3">Time Create</th>
 
-      </tr>
-    </thead>
-    <tbody>
-      {{#each cources}}
+  <div class="mt-4 d-flex align-items-center">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="" id="checkbox-all">
+      <label class="form-check-label " for="checkbox-all">
+       Check All
+      </label>
+    </div>
+    <select class="form-control select-all-options" name="action" required>
+      <option value="">--- Options ---</option>
+      <option value="delete">Delete</option>
+      <option>3</option>
+      <option>4</option>
+      <option>5</option>
+    </select>
+    <button class="btn btn-primary btn-submit-checkbox disabled">Run</button>
+  </div>
+
+
+  <div class="mt-4">
+    <table class="table">
+      <thead>
         <tr>
-          {{! sum @index 1 xem ở index,js gôc phần engine helper }}
-          <th scope="row">{{sum @index 1}}</th>
-          <td>{{this.name}}</td>
-          <td>{{this.level}}</td>
-          <td>{{this.createdAt}}</td>
-          <td><a
-              href="/cources/{{this._id}}/edit"
-              class="btn btn-info"
-            >Edit</a></td>
-          <td><a
-              href="/"
-              class="btn btn-info"
-              data-toggle="modal"
-              data-target="#delete-cource-modal"
-              data-id="{{this._id}}"
-            >Soft Delete</a></td>
+          <th scope="col"></th>
+          <th scope="col">#</th>
+          <th scope="col">Name Cource</th>
+          <th scope="col"> Level </th>
+          <th scope="col" colspan="3">Time Create</th>
+
         </tr>
-        {{else}}
-        <tr>
-          <td colspan="5" class="text-center">
-            You have not posted any courses yet!
-            <a href="/cources/create">Click here to post </a>
-          </td>
-        </tr>
-      {{/each}}
-    </tbody>
-  </table>
-</div>
+      </thead>
+      <tbody>
+        {{#each cources}}
+          <tr>
+            <td>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="{{this._id}}" name="courceIds[]">
+              </div>
+            </td>
+            {{! sum @index 1 xem ở index,js gôc phần engine helper }}
+            <th scope="row">{{sum @index 1}}</th>
+            <td>{{this.name}}</td>
+            <td>{{this.level}}</td>
+            <td>{{this.createdAt}}</td>
+            <td><a
+                href="/cources/{{this._id}}/edit"
+                class="btn btn-info"
+              >Edit</a></td>
+            <td><a
+                href="/"
+                class="btn btn-info"
+                data-toggle="modal"
+                data-target="#delete-cource-modal"
+                data-id="{{this._id}}"
+              >Soft Delete</a></td>
+          </tr>
+          {{else}}
+          <tr>
+            <td colspan="5" class="text-center">
+              You have not posted any courses yet!
+              <a href="/cources/create">Click here to post </a>
+            </td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</form>
 
 {{! Confirm delete cource }}
 <div id="delete-cource-modal" class="modal" tabindex="-1" role="dialog">
@@ -86,6 +113,10 @@
     var courceId;
     var deleteForm = document.forms["delete-cource-form"];
     var btnDelete = document.getElementById("btn-delete-cource");
+    var checkboxAll = $("#checkbox-all");
+    var courceItemCheckbox = $("input[name='courceIds[]']");
+    var btnSubmitCheckbox = $(".btn-submit-checkbox");
+    var containerForm = document.forms["containerForm"];
 
     $("#delete-cource-modal").on("show.bs.modal", function (event) {
       var button = $(event.relatedTarget);
@@ -97,6 +128,69 @@
       deleteForm.action = "/cources/"+courceId+"?_method=DELETE";
       deleteForm.submit();
     }
+
+    // checkboxAll click bằng Jquery
+    checkboxAll.change(function(){
+      var isCheckedAll = $(this).prop("checked");
+      //===xử lý khi check all hay bỏ check all thì cá cái con đều làm theo
+      // Viết gọn thay vì if else => courceItemCheckbox.prop("checked", isCheckedAll);
+      if(isCheckedAll){
+        courceItemCheckbox.prop("checked",true)
+      }else{
+        courceItemCheckbox.prop("checked",false)
+      }
+      renderSubmitBtn()
+    })
+
+    //===xử lý khi bỏ check 1 cái con thì cái all tắt
+    courceItemCheckbox.change(function(){
+      // so sánh tổng số checkbox có bằng số checkbox được check không
+      var isCheckAllChild = courceItemCheckbox.length === $("input[name='courceIds[]']:checked").length;
+
+      // Viết tắt  checkboxAll.prop("checked",isCheckAllChild)
+      if(isCheckAllChild){
+        checkboxAll.prop("checked",true)
+      }else{
+        checkboxAll.prop("checked",false)
+      }
+      renderSubmitBtn()
+    })
+
+    // Khi chưa chọn options thì báo required
+    btnSubmitCheckbox.on("submit",function(e){
+      var isSubmittable = !$(this).hasClass("disabled");
+      if(!isSubmittable){
+        e.preventDefault();
+      }
+
+    })
+
+/**
+    // Khi nút run disable thì không được submit
+    btnSubmitCheckbox.click(function(e){
+      e.preventDefault();
+
+      var isSubmittable = !$(this).hasClass("disabled");
+      if(isSubmittable){
+        containerForm.submit();
+      }
+    })
+**/
+
+    // mở khóa cho nút run
+    function renderSubmitBtn(){
+      var checkedCount = $("input[name='courceIds[]']:checked").length;
+      if(checkedCount > 0){
+        btnSubmitCheckbox.removeClass("disabled")
+      }else{
+        btnSubmitCheckbox.addClass("disabled")
+      }
+
+    }
+
+
+
+    console.log(containerForm)
   });
 
 </script>

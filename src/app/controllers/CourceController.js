@@ -75,6 +75,21 @@ class CourceController {
       })
       .catch((err) => next(err));
   }
+
+  // [POST] /cources/handle-form-actions
+  handleFormActions(req, res, next) {
+    switch (req.body.action) {
+      case "delete":
+        Cource.delete({ _id: { $in: req.body.courceIds } })
+          .then(() => {
+            res.redirect("back");
+          })
+          .catch((err) => next(err));
+        break;
+      default:
+        res.json({ message: "Error!!!" });
+    }
+  }
 }
 
 module.exports = new CourceController();

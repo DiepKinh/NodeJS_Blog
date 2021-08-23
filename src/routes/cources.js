@@ -7,6 +7,7 @@ const courceController = require("../app/controllers/CourceController");
 router.get("/create", courceController.create);
 router.post("/store", courceController.store);
 router.get("/:id/edit", courceController.edit);
+router.post("/handle-form-actions", courceController.handleFormActions);
 router.put("/:id", courceController.update);
 router.delete("/:id", courceController.delete);
 router.patch("/:id/restore", courceController.restore);
