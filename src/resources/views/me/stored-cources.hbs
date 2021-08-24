@@ -27,7 +27,10 @@
       <thead>
         <tr>
           <th scope="col"></th>
-          <th scope="col">#</th>
+          <th scope="col">
+            ID
+            {{{sortable "_id" _sort}}}
+          </th>
           <th scope="col">
             Name Cource
             {{{sortable "name" _sort}}}
@@ -51,8 +54,7 @@
                 <input class="form-check-input" type="checkbox" value="{{this._id}}" name="courceIds[]">
               </div>
             </td>
-            {{! sum @index 1 xem ở index,js gôc phần engine helper }}
-            <th scope="row">{{sum @index 1}}</th>
+            <th scope="row">{{this._id}}</th>
             <td>{{this.name}}</td>
             <td>{{this.level}}</td>
             <td>{{this.createdAt}}</td>
