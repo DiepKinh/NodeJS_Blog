@@ -3,11 +3,18 @@ const {
   mutipleMongooseToObject,
   mongooseToObject,
 } = require("../../util/mongoose");
+const { response } = require("express");
 
 class MeController {
   // [GET] /me/stored/cources
   storedCources(req, res, next) {
-    Promise.all([Cource.find({}), Cource.countDocumentsDeleted()])
+    let courceQuery = Cource.find({});
+
+    if (req.query.hasOwnProperty("_sort")) {
+      courceQuery = courceQuery.sort({ [req.query.column]: [req.query.type] });
+    }
+
+    Promise.all([courceQuery, Cource.countDocumentsDeleted()])
       .then(([cources, deletedCource]) => {
         res.render("me/stored-cources", {
           cources: mutipleMongooseToObject(cources),

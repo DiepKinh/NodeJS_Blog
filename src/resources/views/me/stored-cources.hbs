@@ -22,16 +22,24 @@
     <button class="btn btn-primary btn-submit-checkbox" disabled="disabled">Run</button>
   </div>
 
-
   <div class="mt-4">
     <table class="table">
       <thead>
         <tr>
           <th scope="col"></th>
           <th scope="col">#</th>
-          <th scope="col">Name Cource</th>
-          <th scope="col"> Level </th>
-          <th scope="col" colspan="3">Time Create</th>
+          <th scope="col">
+            Name Cource
+            {{{sortable "name" _sort}}}
+          </th>
+          <th scope="col">
+            Level
+            {{{sortable "level" _sort}}}
+          </th>
+          <th scope="col" colspan="3">
+            Time Create
+            {{{sortable "createdAt" _sort}}}
+          </th>
 
         </tr>
       </thead>
